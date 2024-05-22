@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8001:8000"
+    environment:
+      - DEBUG=1
+      - DATABASE_NAME=djdb
+      - DATABASE_USER=myuser
+      - DATABASE_PASSWORD=mypassword
+      - DATABASE_HOST=db
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=djdb
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+
+volumes:
+  postgres_data:
