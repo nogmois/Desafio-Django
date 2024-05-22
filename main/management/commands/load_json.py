@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from django.db import transaction
-from main.models import Project, Task, Tag  # ajuste para o nome correto do seu app
+from main.models import Project, Task, Tag  
 import json
 
 class Command(BaseCommand):
@@ -31,8 +31,8 @@ class Command(BaseCommand):
 
                 Task.objects.all().delete()
                 for task_data in data['tasks']:
-                    # Ajuste o índice de projeto para base-0
-                    project_index = task_data['project'] - 1  # Subtrai 1 para converter índice base-1 para base-0
+                    
+                    project_index = task_data['project'] - 1  
                     project = projects[project_index]
                     task = Task.objects.create(
                         title=task_data['title'],
@@ -40,7 +40,7 @@ class Command(BaseCommand):
                         status=task_data.get('status', 'P'),
                         project=project
                     )
-                    task.tags.set([tags[tag_id - 1] for tag_id in task_data['tags']])  # Subtrai 1 aqui também se os índices de tags começam em 1
+                    task.tags.set([tags[tag_id - 1] for tag_id in task_data['tags']]) 
                     task.save()
 
         except Exception as e:
